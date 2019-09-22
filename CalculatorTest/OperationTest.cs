@@ -32,6 +32,12 @@ namespace CalculatorTest
         }
 
         [TestMethod]
+        public void Percent()
+        {
+            Assert.AreEqual(50, Operation.Percent.Calculate(8, 4));
+        }
+
+        [TestMethod]
         public void Precedence()
         {
             Assert.AreEqual(Operation.Addition.Precedence(), Operation.Subtraction.Precedence());

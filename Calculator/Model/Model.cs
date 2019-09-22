@@ -13,7 +13,8 @@ namespace Calculator.Model
         Addition,
         Subtraction,
         Multiplication,
-        Division
+        Division,
+        Percent
     }
 
     public enum Associativity
@@ -24,11 +25,18 @@ namespace Calculator.Model
 
     public class Model
     {
-        struct Token
+        public struct Token
         {
             public double? Operand { get; set; }
 
             public Operation? Operation { get; set; }
+        }
+
+        private List<Token> _tokens = new List<Token>();
+
+        public List<Token> GetTokens()
+        {
+            return _tokens;
         }
 
         public Model() { }
@@ -136,8 +144,6 @@ namespace Calculator.Model
 
             return rpnStack.Pop();
         }
-
-        private List<Token> _tokens = new List<Token>();
     }
 
     public static class RandomExtensionMethods
@@ -159,6 +165,8 @@ namespace Calculator.Model
                     return Associativity.Left;
                 case Operation.Division:
                     return Associativity.Left;
+                case Operation.Percent:
+                    return Associativity.Left;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -175,6 +183,8 @@ namespace Calculator.Model
                 case Operation.Multiplication:
                     return 2;
                 case Operation.Division:
+                    return 2;
+                case Operation.Percent:
                     return 2;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -193,6 +203,8 @@ namespace Calculator.Model
                     return lhs * rhs;
                 case Operation.Division:
                     return lhs / rhs;
+                case Operation.Percent:
+                    return (rhs / lhs) * 100;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
